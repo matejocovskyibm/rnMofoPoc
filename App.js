@@ -50,7 +50,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container} >
-        <Text style={styles.welcome}>Hello MobileFirst</Text>
+        <Text style={styles.welcome}>Hello Fixed Test</Text>
         <View style={styles.buttonContainer}>
           <Button title="Ping MFP server" color="white" onPress={this.pingMFP} accessibilityLabel="Press this to ping MFP Server"></Button>
         </View>
