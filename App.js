@@ -23,7 +23,7 @@ export default class App extends Component {
     super(props);
   }
 
-  pingMFP() {
+  pingNode() {
     WLAuthorizationManager.obtainAccessToken("").then(
       (token) => {
         console.log('-->  pingMFP(): Success ', token);
@@ -47,12 +47,41 @@ export default class App extends Component {
         alert("Failed to connect to MobileFirst Server");
       });
   }
+
+  pingSpring() {
+    WLAuthorizationManager.obtainAccessToken("").then(
+      (token) => {
+        console.log('-->  pingMFP(): Success ', token);
+        var resourceRequest = new WLResourceRequest("/adapters/SpringAdapter1/springHello",
+          WLResourceRequest.GET
+        );
+        // resourceRequest.setQueryParameters({ name: "world" });
+        resourceRequest.send().then(
+          (response) => {
+            // Will display "Hello world" in an alert dialog.
+            var newJson = JSON.parse(response.responseText);
+            alert("Success: " + newJson.message);
+          },
+          (error) => {
+            console.error(error);
+            alert("Failure: Resource Request");
+          }
+        );
+      }, (error) => {
+        console.error(error);
+        alert("Failed to connect to MobileFirst Server");
+      });
+  }
+  
   render() {
     return (
       <View style={styles.container} >
         <Text style={styles.welcome}>Hello Fixed Test</Text>
         <View style={styles.buttonContainer}>
-          <Button title="Ping MFP server" color="white" onPress={this.pingMFP} accessibilityLabel="Press this to ping MFP Server"></Button>
+          <Button title="NodeJs Backend" color="black" onPress={this.pingNode} accessibilityLabel="NodeJs Backend"></Button>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Spring Backend" color="blue" onPress={this.pingSpring} accessibilityLabel="Spring Backend"></Button>
         </View>
       </View>
     );
@@ -61,15 +90,12 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent:'space-between',
-    alignItems:"center",
-    backgroundColor: '#F5FCFF',
+
   },
   welcome: {
-    
+    marginBottom: 10
   },
   buttonContainer:{
-    
+      marginBottom: 10
   }
 });
